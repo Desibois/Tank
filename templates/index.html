@@ -2,36 +2,10 @@
     <head>
         <title>Tank It</title>
        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <style>
-            body {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* pushes buttons left, center, right */
-            align-items: center; /* vertical centering */
-            height: 50vh; /* full height of viewport */
-            margin: 0;
-            padding: 0 20px; /* some padding on left and right */
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: none; 
-            }
-            .buttons {
-                display: flex;
-                gap: 50px;
-                margin-top: 30px;
-            }
-            button {
-            padding: 15px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: none; 
-            }
-        </style>
+       <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1 style="text-align:center; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">CONTROLS</h1>
+        <h1>CONTROLS</h1>
         <div class="buttons">
             <button onmousedown="startMove('left')" onmouseup="stopMove()" ontouchstart="startMove('left')" ontouchend="stopMove()">Turn Left</button>
             <button onmousedown="fire()" onmouseup="stopFire()" ontouchstart="fire()" ontouchend="stopFire()">FIRE</button>
