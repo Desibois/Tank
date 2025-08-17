@@ -11,6 +11,9 @@
             height: 50vh; /* full height of viewport */
             margin: 0;
             padding: 0 20px; /* some padding on left and right */
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none; 
             }
             .buttons {
                 display: flex;
@@ -21,43 +24,56 @@
             padding: 15px 30px;
             font-size: 18px;
             cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none; 
             }
         </style>
     </head>
     <body>
         <h1 style="text-align:center; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">CONTROLS</h1>
         <div class="buttons">
-            <button onmousedown="startMove('left')" onmouseup="stopMove()">Turn Left</button>
-            <button onmousedown="fire()" onmouseup="stopFire()">FIRE</button>
-            <button onmousedown="startMove('right')" onmouseup="stopMove()">Turn Right</button>
+            <button onmousedown="startMove('left')" onmouseup="stopMove()" ontouchstart="startMove('left')" ontouchend="stopMove()">Turn Left</button>
+            <button onmousedown="fire()" onmouseup="stopFire()" ontouchstart="fire()" ontouchend="stopFire()">FIRE</button>
+            <button onmousedown="startMove('right')" onmouseup="stopMove()"  ontouchstart="startMove('right')" ontouchend="stopMove()">Turn Right</button>
 
         </div>
 
         <script>
-            let interval;
-            let fire_interval
+            let moveInterval = null;
+			let fireInterval = null;
 
-            function startMove(dir) {
-                interval = setInterval(() => {
-                    console.log("Sending command:", dir);
-                    fetch(`/move?dir=${dir}`);
-                }, 100);  // send command every 100ms
-            }
+			function startMove(dir) {
+				if (moveInterval) clearInterval(moveInterval); // clear any existing interval
+				moveInterval = setInterval(() => {
+					console.log("Sending command:", dir);
+					fetch(`/move?dir=${dir}`);
+				}, 100);
+			}
 
-            function stopMove() {
-                clearInterval(interval);
-            }
+			function stopMove() {
+				if (moveInterval) {
+					clearInterval(moveInterval);
+					moveInterval = null; // reset
+				}
+			}
 
-            function fire(){
-                fire_interval = setInterval(() => {
-                    console.log("Sending command:", "FIRING");
-                    fetch(`/fire?`);
-                }, 100);
-            }
+			function fire() {
+				if (fireInterval) clearInterval(fireInterval); // clear any existing
+				fireInterval = setInterval(() => {
+					console.log("Sending command:", "FIRING");
+					fetch(`/fire?`);
+				}, 100);
+			}
 
-            function stopFire(){
-                clearInterval(fire_interval);
-            }
+			function stopFire() {
+				if (fireInterval) {
+					clearInterval(fireInterval);
+					fireInterval = null;
+				}
+				fetch(`/stopFire?`);
+			}
+
 
         </script>
     </body>
