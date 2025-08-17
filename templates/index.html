@@ -1,6 +1,7 @@
 <!DOCTYPE html>
     <head>
         <title>Tank It</title>
+<<<<<<< HEAD
         <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
@@ -10,11 +11,23 @@
             <button style='width: 100px; height: 100px; clip-path: path("M100,0 Q70,50 100,100 L0,50 Z"); transform: translateY(25px);' onmousedown="startMove('left')" onmouseup="stopMove()"></button>
             <button style="width: 150px; height: 150px; border-radius: 50%;" onmousedown="fire()" onmouseup="stopFire()"><b>FIRE</b></button>
             <button style='width: 100px; height: 100px; clip-path: path("M 0,0 Q 30,50 0,100 L 100,50 Z"); transform: translateY(25px);' onmousedown="startMove('right')" onmouseup="stopMove()"></button>
+=======
+       <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+       <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <h1>CONTROLS</h1>
+        <div class="buttons">
+            <button onmousedown="startMove('left')" onmouseup="stopMove()" ontouchstart="startMove('left')" ontouchend="stopMove()">Turn Left</button>
+            <button onmousedown="fire()" onmouseup="stopFire()" ontouchstart="fire()" ontouchend="stopFire()">FIRE</button>
+            <button onmousedown="startMove('right')" onmouseup="stopMove()"  ontouchstart="startMove('right')" ontouchend="stopMove()">Turn Right</button>
+>>>>>>> c96cd7ce36c9ec54b51eaa85165b02f2dedafc27
 
         </div>
         <div id="tank" class="tank"></div>
         <div class="backgrounds"></div>
         <script>
+<<<<<<< HEAD
             let interval;
             let fire_interval;
             let angle = 0;
@@ -33,11 +46,27 @@
                     });
                 }, 100);  // send command every 100ms
             }
+=======
+            let moveInterval = null;
+			let fireInterval = null;
 
-            function stopMove() {
-                clearInterval(interval);
-            }
+			function startMove(dir) {
+				if (moveInterval) clearInterval(moveInterval); // clear any existing interval
+				moveInterval = setInterval(() => {
+					console.log("Sending command:", dir);
+					fetch(`/move?dir=${dir}`);
+				}, 100);
+			}
+>>>>>>> c96cd7ce36c9ec54b51eaa85165b02f2dedafc27
 
+			function stopMove() {
+				if (moveInterval) {
+					clearInterval(moveInterval);
+					moveInterval = null; // reset
+				}
+			}
+
+<<<<<<< HEAD
             function fire(){
                 if(fire_interval) clearInterval(fire_interval);
                 fire_interval = setInterval(() => { 
@@ -52,6 +81,24 @@
                 pewSound.pause()
                 clearInterval(fire_interval);
             }
+=======
+			function fire() {
+				if (fireInterval) clearInterval(fireInterval); // clear any existing
+				fireInterval = setInterval(() => {
+					console.log("Sending command:", "FIRING");
+					fetch(`/fire?`);
+				}, 100);
+			}
+
+			function stopFire() {
+				if (fireInterval) {
+					clearInterval(fireInterval);
+					fireInterval = null;
+				}
+				fetch(`/stopFire?`);
+			}
+
+>>>>>>> c96cd7ce36c9ec54b51eaa85165b02f2dedafc27
 
         </script>
     </body>
