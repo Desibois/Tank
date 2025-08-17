@@ -1,8 +1,8 @@
 <!DOCTYPE html>
     <head>
         <title>Tank It</title>
-        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+       <link rel="icon" type="image/x-icon" href="favicon.ico">
+       <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <h1 >CONTROLS</h1>
@@ -18,19 +18,19 @@
             let interval;
             let fire_interval;
             let angle = 0;
-            let pewSound = new Audio('/static/pew.mp3');
-            pewSound.loop = true;
 
             function startMove(dir) {
                 if(interval) clearInterval(interval);
                 interval = setInterval(() => {
                     console.log("Sending command:", dir);
                     fetch(`/move?dir=${dir}`)
-                    .then(response => response.json())   // parse JSON
+                    .then(response => response.text())   
                     .then(data => {
-                    angle += data.movement;           // add delta from Flask
-                    document.getElementById("tank").style.transform = `rotate(${angle}deg)`;
+                        angle += parseFloat(data);              
+                        console.log(angle);
+                        document.getElementById("tank").style.transform = `rotate(${angle}deg)`;
                     });
+
                 }, 100);  // send command every 100ms
             }
 
@@ -40,16 +40,13 @@
 
             function fire(){
                 if(fire_interval) clearInterval(fire_interval);
-                fire_interval = setInterval(() => { 
-                    pewSound.play();
+                fire_interval = setInterval(() => {
                     console.log("Sending command:", "FIRING");
                     fetch(`/fire?`);
                 }, 100);
             }
 
             function stopFire(){
-                pewSound.currentTime = 0;
-                pewSound.pause()
                 clearInterval(fire_interval);
             }
 

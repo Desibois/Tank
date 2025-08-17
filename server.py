@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -10,7 +10,12 @@ def home():
 def move():
     direction = request.args.get("dir")
     print(f"Move command received: {direction}")
-    return f"Moved {direction}"
+    if direction == 'left':
+        return jsonify({"movement": -10})
+    elif direction == 'right':
+        return jsonify({"movement": 10})
+    else:
+        return jsonify({"movement": 0})
 
 @app.route("/fire")
 def fire_gun():
